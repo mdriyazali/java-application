@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ENV=dev
+      - SPRING_PROFILES_ACTIVE=${ENV}
+    ports:
+      - "8084:8080"  # Exposes port 8084 on the host and maps it to port 8080 in the container
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"  # Exposes port 5432 on the host (typically not needed to be changed)
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
