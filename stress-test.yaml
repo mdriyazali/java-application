@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress-test
+  namespace: development
+spec:
+  containers:
+  - name: stress
+    image: ubuntu:latest
+    command: ["/bin/bash"]
+    args:
+    - -c
+    - |
+      apt-get update && apt-get install -y stress && \
+      stress --cpu 2 --timeout 600s
